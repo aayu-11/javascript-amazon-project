@@ -81,6 +81,21 @@ function updateQuantity(productId, newQuantity) {
   saveToLocalStorage();
 }
 
+function updateDeliveryOption(productId, deliveryOptionId) {
+  let matchingItem;
+
+  cart.forEach((cartItem) => {
+    if (cartItem.productId === productId) {
+      matchingItem = cartItem;
+      return;
+    }
+  });
+
+  matchingItem.deliveryOptionId = deliveryOptionId;
+
+  saveToLocalStorage();
+}
+
 export {
   cart,
   addToCart,
@@ -88,4 +103,5 @@ export {
   saveToLocalStorage,
   calculateCartQuantity,
   updateQuantity,
+  updateDeliveryOption,
 };

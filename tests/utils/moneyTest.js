@@ -13,6 +13,9 @@ describe("test suite: formatCurrency", () => {
   it("converts 2000.4 to $20.00", () => {
     expect(formatCurrency(2000.4)).toEqual("$20.00");
   });
+  it("works with negative numbers", () => {
+    expect(formatCurrency(-1000)).toEqual("$-10.00");
+  });
   it("object equality check", () => {
     let obj1 = { a: 1, b: 2 };
     let obj2 = { a: 1, b: 2 };

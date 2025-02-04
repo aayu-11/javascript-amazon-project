@@ -583,6 +583,9 @@ function loadProductsFetch(fun) {
         }
         return new Product(productDetails);
       });
+    })
+    .catch((error) => {
+      console.error("Error loading products", error);
     });
 
   if (fun) {
@@ -608,6 +611,10 @@ function loadProductsFetch(fun) {
 //     });
 //
 //     fun();
+//   });
+//
+//   xhr.addEventListener("error", () => {
+//     console.error("Error loading products");
 //   });
 //
 //   xhr.open("GET", "https://supersimplebackend.dev/products");

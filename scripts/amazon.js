@@ -1,10 +1,13 @@
 import { addToCart, calculateCartQuantity } from "../data/cart.js";
-import { products } from "../data/products.js";
+import { products, loadProducts } from "../data/products.js";
 
-let productHtml = "";
+loadProducts(renderProductsGrid);
 
-products.forEach((product) => {
-  productHtml += `
+function renderProductsGrid() {
+  let productHtml = "";
+
+  products.forEach((product) => {
+    productHtml += `
 <div class="product-container">
           <div class="product-image-container">
             <img
@@ -53,51 +56,54 @@ products.forEach((product) => {
         </div>
 
 `;
-});
-
-function updateCartQuantity() {
-  const cartQuantity = calculateCartQuantity();
-  document.querySelector(".js-cart-quantity").textContent = cartQuantity;
-}
-
-function displayAddedMessage(productId, addedMessageTimeoutId) {
-  const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
-
-  addedMessage.classList.add("added-to-cart-visible");
-  // debouncing the added message
-  setTimeout(() => {
-    // check if previous timeout is still running
-    if (addedMessageTimeoutId) {
-      clearTimeout(addedMessageTimeoutId);
-    }
-    const timeoutId = setTimeout(() => {
-      addedMessage.classList.remove("added-to-cart-visible");
-    }, 2000);
-    addedMessageTimeoutId = timeoutId;
   });
-}
 
-document.querySelector(".js-products-grid").innerHTML = productHtml;
+  function updateCartQuantity() {
+    const cartQuantity = calculateCartQuantity();
+    document.querySelector(".js-cart-quantity").textContent = cartQuantity;
+  }
 
-updateCartQuantity();
-
-document.querySelectorAll(".js-add-to-cart").forEach((button) => {
-  let addedMessageTimeoutId;
-
-  button.addEventListener("click", () => {
-    // data-product-name is a custom attribute that we can access using the dataset property on the button element
-    // and it automatically converts the attribute name from kebab-case to camelCase
-    // console.log(button.dataset.productName);
-    const { productId } = button.dataset;
-
-    const quantitySelector = document.querySelector(
-      `.js-quantity-selector-${productId}`,
+  function displayAddedMessage(productId, addedMessageTimeoutId) {
+    const addedMessage = document.querySelector(
+      `.js-added-to-cart-${productId}`,
     );
-    const quantity = parseInt(quantitySelector.value);
-    addToCart(productId, quantity);
 
-    updateCartQuantity();
+    addedMessage.classList.add("added-to-cart-visible");
+    // debouncing the added message
+    setTimeout(() => {
+      // check if previous timeout is still running
+      if (addedMessageTimeoutId) {
+        clearTimeout(addedMessageTimeoutId);
+      }
+      const timeoutId = setTimeout(() => {
+        addedMessage.classList.remove("added-to-cart-visible");
+      }, 2000);
+      addedMessageTimeoutId = timeoutId;
+    });
+  }
 
-    displayAddedMessage(productId, addedMessageTimeoutId);
+  document.querySelector(".js-products-grid").innerHTML = productHtml;
+
+  updateCartQuantity();
+
+  document.querySelectorAll(".js-add-to-cart").forEach((button) => {
+    let addedMessageTimeoutId;
+
+    button.addEventListener("click", () => {
+      // data-product-name is a custom attribute that we can access using the dataset property on the button element
+      // and it automatically converts the attribute name from kebab-case to camelCase
+      // console.log(button.dataset.productName);
+      const { productId } = button.dataset;
+
+      const quantitySelector = document.querySelector(
+        `.js-quantity-selector-${productId}`,
+      );
+      const quantity = parseInt(quantitySelector.value);
+      addToCart(productId, quantity);
+
+      updateCartQuantity();
+
+      displayAddedMessage(productId, addedMessageTimeoutId);
+    });
   });
-});
+}

@@ -117,10 +117,24 @@ function loadCart(fun) {
   xhr.send();
 }
 
+async function loadCartFetch() {
+  const response = await fetch("https://supersimplebackend.dev/cart");
+  const data = await response.text();
+  console.log(data);
+  return data;
+}
+
+function resetCart() {
+  cart = [];
+  saveToLocalStorage();
+}
+
 export {
   cart,
   loadCart,
+  loadCartFetch,
   addToCart,
+  resetCart,
   removeFromCart,
   saveToLocalStorage,
   loadFromLocalStorage,

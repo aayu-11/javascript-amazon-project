@@ -3,6 +3,7 @@ import { getProduct } from "../../data/products.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import { formatCurrency } from "../utils/money.js";
 import { addOrder } from "../../data/orders.js";
+import { resetCart } from "../../data/cart.js";
 
 function renderPaymentSummary() {
   let productPricecents = 0;
@@ -72,6 +73,7 @@ function renderPaymentSummary() {
       } catch (error) {
         console.error(error);
       }
+      resetCart();
       window.location = "orders.html";
     });
 }
